@@ -94,17 +94,19 @@ def merge_data(df_results_by_candidats: pd.DataFrame) -> pd.DataFrame:
     df_results_by_candidats['Pourcentage tour 2'] = df_results_by_candidats['Pourcentage tour 2'].apply(lambda x: float(x.replace(',', '.')) if isinstance(x, str) and ',' in x else x)
     # df_results_by_candidats['Pouvoir achat'] = df_results_by_candidats['Pouvoir achat'].astype(float)
     df_results_by_candidats['Taux criminalite'] = df_results_by_candidats['Taux criminalite'].astype(float)
-    df_results_by_candidats['Taux chomage'] = df_results_by_candidats['Taux chomage'].astype(float)
+    df_results_by_candidats['Taux chomage'] = df_results_by_candidats['Taux chomage'].astype(float).round(4)
     # Nettoyage pour éviter les erreurs de conversion
     import numpy as np
-    df_results_by_candidats['Nombre defaillance entreprise'] = (
-        df_results_by_candidats['Nombre defaillance entreprise']
-        .replace('', 0)
-        .replace(np.nan, 0)
-        .fillna(0)
-        .astype(float)
-        .astype(int)
-    )
+    for col in ['Taux criminalite', 'Taux chomage', 'Nombre defaillance entreprise']:
+        df_results_by_candidats[col] = (
+            df_results_by_candidats[col]
+            .replace('', 0)
+            .replace(' ', 0)
+            .replace(np.nan, 0)
+            .fillna(0)
+            .astype(float)
+        )
+    df_results_by_candidats['Nombre defaillance entreprise'] = df_results_by_candidats['Nombre defaillance entreprise'].astype(int)
 
 
     # Obtenir les indices des lignes ayant le pourcentage le plus élevé pour chaque année et département
@@ -125,6 +127,7 @@ def merge_data(df_results_by_candidats: pd.DataFrame) -> pd.DataFrame:
     # Réinitialiser les index du DataFrame
     df_results_by_candidats = df_results_by_candidats.reset_index(drop=True)
 
-    df_results_by_candidats.to_excel(merged_data_path / 'results_by_year.xlsx', index=False)
-    df_results_by_candidats.to_csv(merged_data_path / 'results_by_year.csv', index=False)
-    print(f"Les résultats des élections ont été fusionnés et sauvegardés dans : {merged_data_path / 'results_by_year.csv'}")
+    df_results_by_candidats.to_excel(merged_data_path / 'data_merged_by_year.xlsx', index=False)
+    df_results_by_candidats.to_csv(merged_data_path / 'data_merged_by_year.csv', index=False)
+    print(f"Les résultats des élections ont été fusionnés et sauvegardés dans : {merged_data_path / 'data_merged_by_year.csv'}")
+    print(f"Les résultats des élections ont été fusionnés et sauvegardés dans : {merged_data_path / 'data_merged_by_year.xlsx'}")

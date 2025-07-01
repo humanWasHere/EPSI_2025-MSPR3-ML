@@ -1,6 +1,7 @@
 # MSPR3
 
-Nous avons choisi de nous concentrer sur la région Auvergne Rhône Alpes (AURA - 84).
+Le but ici est de prédire les élections présidentielles de 2022 en France se basant sur les précédentes élections depuis 1995.
+Nous avons choisi de nous concentrer sur des inidcateurs complémentaires de la région Auvergne Rhône Alpes (AURA - 84).
 Tout nos datasets sont issus des sites data.gouv ou inssee.fr.
 
 Sommaire :
