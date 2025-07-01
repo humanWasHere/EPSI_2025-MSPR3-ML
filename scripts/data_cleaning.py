@@ -14,7 +14,7 @@ def get_criminality() -> pd.DataFrame:
     df_criminality_aura = df_criminality[df_criminality['Code_region'] == 84]
     # Renommer les colonnes
     df_criminality_aura = df_criminality_aura.rename(columns={
-        'annee': 'Années',
+        'annee': 'Année',
         'indicateur': 'Crimes',
         'taux_pour_mille': 'Taux de criminalité (pour mille)',
     })
@@ -44,8 +44,8 @@ def get_criminality() -> pd.DataFrame:
     # Typing
     # Convertir 'Taux pour mille' en numérique, en remplaçant les virgules par des points
     df_criminality_aura['Taux de criminalité (pour mille)'] = df_criminality_aura['Taux de criminalité (pour mille)'].astype(str).str.replace(',', '.').astype(float)
-    # Convertir 'Années' en entier
-    df_criminality_aura['Années'] = df_criminality_aura['Années'].astype(int)
+    # Convertir 'Année' en entier
+    df_criminality_aura['Année'] = df_criminality_aura['Année'].astype(int)
     # Supprimer les colonnes inutiles
     df_criminality_aura = df_criminality_aura.drop(columns=['Code_region', 'unite_de_compte', 'insee_pop_millesime', 'insee_log', 'insee_log_millesime'])
     # Special clean
@@ -60,7 +60,7 @@ def get_criminality() -> pd.DataFrame:
         df_criminality_aura = df_criminality_aura.reset_index(drop=True)
     # # Supprimer les colonnes inutiles
     # df_criminality_aura = df_criminality_aura.drop(columns=['Crimes', 'insee_pop', 'nombre'])
-    df_grouped = df_criminality_aura.groupby('Années', as_index=False)['Taux de criminalité (pour mille)'].mean().round(3)
+    df_grouped = df_criminality_aura.groupby('Année', as_index=False)['Taux de criminalité (pour mille)'].mean().round(3)
     criminalite_saving_path = cleaned_data_path / 'criminalite' / 'criminalite_aura.csv'
     criminalite_saving_path.parent.mkdir(parents=True, exist_ok=True)
     df_grouped.to_csv(criminalite_saving_path, index=False, sep=';', encoding='utf-8-sig')
@@ -83,13 +83,13 @@ def get_defaillance_entreprise_by_year() -> pd.DataFrame:
     # Convertir 'Mois' en période Année-Mois sans jour
     df_defaillance['Mois'] = pd.to_datetime(df_defaillance['Mois'], format="%Y-%m", errors='coerce').dt.to_period('M')
     # typing
-    df_defaillance['Années'] = df_defaillance['Mois'].dt.year.astype(int)
+    df_defaillance['Année'] = df_defaillance['Mois'].dt.year.astype(int)
     df_defaillance["Nombre de défaillances d'entreprises"] = df_defaillance["Nombre de défaillances d'entreprises"].astype(int)
     df_defaillance = df_defaillance.drop(columns=['Mois'])  # Supprimer la colonne 'Mois' si nécessaire
     # Supprimer les lignes où l'année ou le nombre de défaillances est manquant
-    df_defaillance = df_defaillance.dropna(subset=['Années', "Nombre de défaillances d'entreprises"])
+    df_defaillance = df_defaillance.dropna(subset=['Année', "Nombre de défaillances d'entreprises"])
     # Regrouper et sommer par année
-    df_grouped = df_defaillance.groupby('Années', as_index=False).sum()
+    df_grouped = df_defaillance.groupby('Année', as_index=False).sum()
     defaillance_saving_path = cleaned_data_path / 'defaillances_entreprises' / 'defaillances_entreprises_aura.csv'
     defaillance_saving_path.parent.mkdir(parents=True, exist_ok=True)
     df_grouped.to_csv(defaillance_saving_path, index=False, sep=';', encoding='utf-8-sig')
@@ -107,14 +107,14 @@ def get_chomage_by_year() -> pd.DataFrame:
     })
     # Convertir 'Trimestre' en période Trimestre sans jour
     # Typage
-    df_chomage['Années'] = pd.PeriodIndex(df_chomage['Trimestre'].str.replace('T', 'Q'), freq='Q').year.astype(int)
+    df_chomage['Année'] = pd.PeriodIndex(df_chomage['Trimestre'].str.replace('T', 'Q'), freq='Q').year.astype(int)
     df_chomage['Taux de chômage'] = df_chomage['Taux de chômage'].astype(float)
     # Supprimer les colonnes 'Codes' et 'Trimestre'
     df_chomage = df_chomage.drop(columns=['Codes', 'Trimestre'])
     # Si besoin supprimer les lignes où l'année ou le taux de chomage est manquant
-    df_chomage = df_chomage.dropna(subset=['Années', "Taux de chômage"])
+    df_chomage = df_chomage.dropna(subset=['Année', "Taux de chômage"])
     # Regrouper et sommer par année
-    df_grouped = df_chomage.groupby('Années', as_index=False).mean()
+    df_grouped = df_chomage.groupby('Année', as_index=False).mean()
     # Arrondir le taux de chômage à 2 décimales
     df_grouped['Taux de chômage'] = df_grouped['Taux de chômage'].round(3)
     chomage_saving_path = cleaned_data_path / 'chomage' / 'chomage_aura.csv'
@@ -123,7 +123,7 @@ def get_chomage_by_year() -> pd.DataFrame:
     print(f"Le fichier du taux de chomage par année en AURA à été sauvegardé : {chomage_saving_path}")
 
 if __name__ == "__main__":
-    get_pouvoir_achat()
-    # get_criminality()
-    # get_defaillance_entreprise_by_year()
-    # get_chomage_by_year()
+    # get_pouvoir_achat()
+    get_criminality()
+    get_defaillance_entreprise_by_year()
+    get_chomage_by_year()

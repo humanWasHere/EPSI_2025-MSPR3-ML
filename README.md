@@ -23,7 +23,8 @@ L'ensemble des datasets d'origine est répartie dans le dossier
 Numéro de région officiel : 84
 
 ### Datasets d'élections
-- élections de 2022 : https://www.data.gouv.fr/en/datasets/r/cb0bd397-c135-4540-b92e-e536ad4dbc8e
+- élections présidentielles : https://www.data.gouv.fr/fr/pages/donnees-des-elections-et-referendums#%C3%89lections%20pr%C3%A9sidentielles  
+méthode : sélectionner chaque tours de chaque années d'élection (télécharger le csv qui rends du txt --> convertir), placer T1 et T2 dans le même fichier xlsx et les nommer "Départements T1" et "Départements T2" pour matcher avec le format de chaques années.
 
 ### Informations complémentaires
 - taux de chomage : https://www.insee.fr/fr/statistiques/serie/001739986#Telechargement
