@@ -1,0 +1,9 @@
+# secrets - security by design
+.env
+
+# python cache
+**/__pycache__/
+
+# generated data
+cleaned_data/
+merged_data/
