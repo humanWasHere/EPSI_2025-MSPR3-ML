@@ -1,8 +1,8 @@
 from pathlib import Path
 import pandas as pd
 
-original_data_path = Path(__file__).parents[1] / 'data' / 'original_data'
-cleaned_data_path = Path(__file__).parents[1] / 'data' / 'cleaned_data'
+original_data_path = Path(__file__).parents[2] / 'data' / 'original_data'
+cleaned_data_path = Path(__file__).parents[2] / 'data' / 'cleaned_data'
 
 def get_pouvoir_achat() -> pd.DataFrame:
     return None
@@ -68,7 +68,7 @@ def get_criminality() -> pd.DataFrame:
     return df_grouped
 
 def get_defaillance_entreprise_by_year() -> pd.DataFrame:
-    df = original_data_path / 'defaillances_entreprises' / 'valeurs_mensuelles.csv'
+    df = original_data_path / 'defaillance_entreprise' / 'valeurs_mensuelles.csv'
     df_defaillance = pd.read_csv(df, sep=';', encoding='utf-8')
     # Supprimer les lignes inutiles
     df_defaillance = df_defaillance.drop(df_defaillance.index[[0, 1, 2]])

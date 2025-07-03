@@ -1,8 +1,8 @@
 from pathlib import Path
 import pandas as pd
 
-cleaned_data_path = Path(__file__).parents[1] / 'data' / 'cleaned_data'
-merged_data_path = Path(__file__).parents[1] / 'data' / 'merged_data'
+cleaned_data_path = Path(__file__).parents[2] / 'data' / 'cleaned_data'
+merged_data_path = Path(__file__).parents[2] / 'data' / 'merged_data'
 
 # def merge_data() -> pd.DataFrame:
 #     """
@@ -27,7 +27,7 @@ merged_data_path = Path(__file__).parents[1] / 'data' / 'merged_data'
     
 #     return merged_df
 
-def merge_data(df_results_by_candidats: pd.DataFrame) -> pd.DataFrame:
+def merge_data(df_results_by_candidats: pd.DataFrame) -> None:
     """
     Merge the election results with the cleaned data from different sources.
     """

@@ -2,11 +2,9 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
-electorales_data_path = Path(__file__).parents[1] / 'data' / 'original_data' / 'electorales'
-candidats_data_path = Path(__file__).parents[1] / 'data' / 'original_data' / 'candidat'
-cleaned_data_path = Path(__file__).parents[1] / 'data' / 'cleaned_data'
-
-
+electorales_data_path = Path(__file__).parents[2] / 'data' / 'original_data' / 'electorales'
+candidats_data_path = Path(__file__).parents[2] / 'data' / 'original_data' / 'candidats'
+cleaned_data_path = Path(__file__).parents[2] / 'data' / 'cleaned_data'
 
 yearListFile = {
     '1995.xls': 9,
@@ -82,4 +80,3 @@ def get_elections_results() -> pd.DataFrame:
     df_results_by_candidats = pd.merge(df_results, df_candidats, how='left', on=['Année', 'Candidat'])
 
     return df_results_by_candidats
-

@@ -10,14 +10,31 @@ Sommaire :
 3. [Architecture du dépôt de code](#architecture-du-dépôt-de-code-)
 4. [Collaborateurs](#collaborateurs-)
 
+
 ## TL;DR - lancement de l'app
-En premier lieu, faites en sorte d'avoir un environnement python valide avec toutes les dépendances de librairies installées.
-Dans le dossier root du projet clonné, lancer la commande suivante.
+En premier lieu, faites en sorte d'avoir un environnement python valide avec toutes les dépendances de librairies installées.  
+Dans le dossier root du projet clonné, lancer la commande suivante.  
 ```csh
 python ./scripts/__main__.py
-```
+```  
 Cela va créer les datasets nettoyés et les assembler afin de pouvoir les utiliser pour de l'entrainement et du teste de modèle de ML.  
-Une fois cela fait, utiliser le fichier `./scripts/machine_learning.ipynb` pour utiliser les modèles de ML.
+Si vous souhaitez exporter ces données de manière persistante, utiliser le script de création de base de données SQL `scripts/database/db_creation.sql` puis remplissez la table avec `scripts/database/insert_data_to_db.py`.  
+Une fois cela fait, utiliser le fichier `./scripts/machine_learning.ipynb` pour utiliser notre modèle de ML.  
+Vous pouvez également sortir d'autres graphiques avec `python ./scripts/visualisation_data.py`
+
+## Méthode
+Shéma de traitement des données :
+```mermaid
+flowchart TD
+    A[Collecte des données] --> B[Nettoyage & normalisation des données]
+    B --> C[Prétraitement / Transformation / Merge]
+    C --> D[Split Train - 80% / Test - 20%]
+    D --> E[Entraînement du modèle - avant 2022]
+    E --> F[Évaluation du modèle - en 2022]
+    F --> G{Modèle satisfaisant ?}
+    G -- Oui --> H[Déploiement]
+    G -- Non --> C
+```
 
 ## Liens des datasets - Auvergne Rhône Alpes
 L'ensemble des datasets d'origine est répartie dans le dossier   
@@ -38,32 +55,51 @@ méthode : sélectionner chaque tours de chaque années d'élection (télécharg
 
 ## Architecture du dépôt de code
 Cette arborescence est complète une fois le script lancé (génération automatique des dossiers clean + merge)  
+La partie qui va nous intéresser du répo est le dossier `scripts/`.  
+Il est composé de 3 sous dossiers `data_creation` (crée le fichier final de données), `database` (contient le fichier de création de base de données en SQL et le script de remplissage des données en python) et `notebooks_ml` qui contient les notebooks Jupyter pour la visualisation des modèles de ML.  
 ```
 .
 ├── .gitignore
 ├── README.md
 ├── scripts-app/
-│   ├── data_cleaning.py
-│   ├── data_election.py
-│   ├── data_merging.py
-│   └── machine_learning_model.ipynb
+│   ├── .env
+│   ├── __main__.py
+│   ├── data_creation/
+│   │   ├── data_cleaning.py
+│   │   ├── data_election.py
+│   │   └── data_merging.py
+│   ├── database/
+│   │   ├── db_creation.sql
+│   │   └── insert_data_to_db.py
+│   ├── notebooks_ml/
+│   │   ├── benchmark_algos.ipynb
+│   │   └── machine_learning_model.ipynb
 └── data-assets/
     ├── original_data/
+    │   ├── candidats/
+    │   │   └── 
     │   ├── chomage/
     │   │   └── 
     │   ├── criminalite/
     │   │   └── 
-    │   └── defaillances_entreprises/
+    │   ├── defaillance_entreprise/
+    │   │   └── 
+    │   └── electorales/
     │       └── 
     ├── cleaned_data/
+    │   ├── candidats/
+    │   │   └── 
     │   ├── chomage/
     │   │   └── 
     │   ├── criminalite/
     │   │   └── 
-    │   └── defaillances_entreprises/
+    │   ├── defaillance_entreprise/
+    │   │   └── 
+    │   └── electorales/
     │       └── 
     └── merged_data/
-        └── data_merged.csv
+        ├── data_merged_by_year.csv
+        └── data_merged_by_year.xlsx
 ```
 
 ## Collaborateurs
